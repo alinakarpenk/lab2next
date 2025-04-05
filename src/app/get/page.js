@@ -1,8 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
+
 export default function GetPosts() {
     const [posts, setPosts] = useState(null);
     const [message, setMessage] = useState('');
+    const router = useRouter(); // <-- переконайся, що це є
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -33,6 +37,11 @@ export default function GetPosts() {
             setMessage("Помилка при видаленні поста");
         }
     };
+
+    const handleEdit = (id) => {
+        router.push(`/get/patch/${id}`);
+    };
+
     return (
         <div>
             <h2>Список постів</h2>
@@ -46,6 +55,8 @@ export default function GetPosts() {
                             <p>{post.text}</p>
                             {post.User && <p>Автор: {post.User.login}</p>}
                             <button onClick={() => handleDelete(post.id)}>Видалити</button>
+                            <button onClick={() => handleEdit(post.id)}>Редагувати</button>
+
                         </li>
                     ))}
                            <p>{message}</p>
