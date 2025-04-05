@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-
 export default function GetPosts() {
     const [posts, setPosts] = useState(null);
+    const [message, setMessage] = useState('');
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -11,13 +11,28 @@ export default function GetPosts() {
                     throw new Error(`Помилка: ${response.status} ${response.statusText}`);
                 }
                 const data = await response.json();
-                setPosts(data.rows || []); 
+                setPosts(data.rows || []);
+                console.log("Fetched posts:", data.rows);
+
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         };
         fetchData();
     }, []);
+    const handleDelete = async (id) => {
+        console.log("Deleting post with ID:", id);
+        const res = await fetch(`/api/posts/${id}`, {
+            method: 'DELETE',
+        });
+        const data = await res.json();
+        if (res.ok) {
+            setPosts(posts.filter(post => post.id !== id));
+            setMessage("Пост успішно видалено");
+        } else {
+            setMessage("Помилка при видаленні поста");
+        }
+    };
     return (
         <div>
             <h2>Список постів</h2>
@@ -25,13 +40,15 @@ export default function GetPosts() {
                 <p>Завантаження...</p>
             ) : posts.length > 0 ? (
                 <ul>
-                    {posts.map((post, index) => (
-                        <li key={index}>
+                    {posts.map((post) => (
+                        <li key={post.id}>
                             <h4>{post.title}</h4>
                             <p>{post.text}</p>
                             {post.User && <p>Автор: {post.User.login}</p>}
+                            <button onClick={() => handleDelete(post.id)}>Видалити</button>
                         </li>
                     ))}
+                           <p>{message}</p>
                 </ul>
             ) : (
                 <p>Немає даних для відображення</p>
@@ -39,3 +56,4 @@ export default function GetPosts() {
         </div>
     );
 }
+

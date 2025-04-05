@@ -11,11 +11,14 @@ export async function GET(request) {
                     attributes: ['login'],
                 },
             ],
-            attributes: ['title', 'text', 'userId'],
+            attributes: ['id', 'title', 'text', 'userId'],
         });
         return NextResponse.json(posts);
     } catch (error) {
         console.error("Error fetching posts:", error); 
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    
 }
+
