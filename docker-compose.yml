@@ -1,0 +1,27 @@
+services:
+  db:
+    container_name: mysql-db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: lab2_db
+      MYSQL_ROOT_PASSWORD: 111111
+    ports:
+      - "3307:3306"
+
+  app:
+    build:
+      context: .
+    container_name: lab2NextJs
+    depends_on:
+      - db
+    environment:
+      DATABASE_NAME: lab2_db
+      DATABASE_USER: root
+      DATABASE_PASSWORD: 111111
+      DATABASE_HOST: db
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    command: ["npm", "run", "dev"]

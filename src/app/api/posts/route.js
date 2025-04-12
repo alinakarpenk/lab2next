@@ -22,7 +22,7 @@ export async function GET(request) {
     
 }
 
-export async function PATCH(request, { params }) {
+/*export async function PATCH(request, { params }) {
     try {
       const postId = params.id;
       const body = await request.json();
@@ -40,6 +40,6 @@ export async function PATCH(request, { params }) {
     } catch (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
-  }
+  }*/
 
 
