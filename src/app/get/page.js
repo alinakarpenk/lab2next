@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 export default function GetPosts() {
     const [posts, setPosts] = useState(null);
     const [message, setMessage] = useState('');
-    const router = useRouter(); // <-- переконайся, що це є
+    const router = useRouter();
 
     useEffect(() => {
         const fetchData = async () => {
